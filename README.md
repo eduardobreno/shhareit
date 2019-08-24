@@ -43,7 +43,7 @@ This is a WIP project: A app to share medias using firebase from google
 - `npm run android` or open the project file `.\android` on Android Studio
 - `npm run ios` or open the project file `shhareit.xcworkspace` on folder `.\ios` on Xcode
 
-In order to run app, you'll need valid GoogleService-Info.plist and google-services.json files. The Firebase Xcode project contains unupdated plist files without real values, but can be replaced with real plist files. To get your own GoogleService-Info.plist/google-services.json files:
+In order to run app, you'll need valid GoogleService-Info.plist and google-services.json files. The xcode/android project contains a fake plist files without real values, but can be replaced with real plist files. To get your own GoogleService-Info.plist/google-services.json files:
 
 Go to the Firebase Console
 Create a new Firebase project, if you don't already have one
