@@ -31,7 +31,13 @@ target 'shhareit' do
   pod 'react-native-config', :path => '../node_modules/react-native-config'
 
 
-  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+  pod 'Firebase/Core', '~> 6.3.0'
+  pod 'Firebase/Auth', '~> 6.3.0'
+  pod 'Firebase/Firestore', '~> 6.3.0'
+  pod 'Fabric', '~> 1.10.2'
+  pod 'Crashlytics', '~> 3.13.2'
+  pod 'Firebase/Storage', '~> 6.3.0'
 
   target 'shhareitTests' do
     inherit! :search_paths

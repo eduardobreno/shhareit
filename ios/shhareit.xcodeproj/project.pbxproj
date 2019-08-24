@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* shhareitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* shhareitTests.m */; };
 		0472EC04EB344803A2F6FC85 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C66CF3D9575241109BD787C1 /* Foundation.ttf */; };
+		0AA8690F2311ECC700973864 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0AA8690E2311ECC700973864 /* GoogleService-Info.plist */; };
 		101F156F67CB4E7EA81222D5 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5636DFD034F745FFAC3E6E9E /* OpenSans-SemiBold.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
@@ -74,6 +75,7 @@
 		00E356F21AD99517003FC87E /* shhareitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = shhareitTests.m; sourceTree = "<group>"; };
 		0490285B8F025DC2ABBB4DAC /* Pods-shhareit-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shhareit-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-shhareit-tvOSTests/Pods-shhareit-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		08AEB123E7994C3EAE41B1C4 /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
+		0AA8690E2311ECC700973864 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0DD13CDA5AE549079B5A2255 /* Lato-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Black.ttf"; path = "../app/assets/fonts/Lato/Lato-Black.ttf"; sourceTree = "<group>"; };
 		0E2FA02AE635487CA8EEDE95 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* shhareit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = shhareit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -206,6 +208,7 @@
 		13B07FAE1A68108700A75B9A /* shhareit */ = {
 			isa = PBXGroup;
 			children = (
+				0AA8690E2311ECC700973864 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -341,6 +344,8 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				0AA869122311EDDB00973864 /* ShellScript */,
+				32AFA1C59620971F0D6DCE20 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -463,6 +468,7 @@
 				62A6F6C76503435BBA956EFC /* AntDesign.ttf in Resources */,
 				9BA02A8D195844F4A02F8C06 /* Entypo.ttf in Resources */,
 				5952840B45AC4F0CB10D245D /* EvilIcons.ttf in Resources */,
+				0AA8690F2311ECC700973864 /* GoogleService-Info.plist in Resources */,
 				BB9912353F32464397D69ACB /* Feather.ttf in Resources */,
 				6CC97635AAD0492190B3440D /* FontAwesome.ttf in Resources */,
 				9AA0C1CBFF404F7EBD827BD0 /* FontAwesome5_Brands.ttf in Resources */,
@@ -511,7 +517,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+		};
+		0AA869122311EDDB00973864 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
 		};
 		1E8D7DB981CB1BE4A999F7CB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -548,6 +571,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		32AFA1C59620971F0D6DCE20 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-shhareit/Pods-shhareit-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++/gRPCCertificates-Cpp.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates-Cpp.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-shhareit/Pods-shhareit-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		44B0C4871999BE3640461CE4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
