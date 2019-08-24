@@ -120,6 +120,8 @@ export const stl = {
   },
   tab: {
     activeTintColor: colors.PRIMARY_TEXT_COLOR,
-    inactiveTintColor: colors.PRIMARY_TEXT_COLOR_LIGHT
+    activeBackgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
+    inactiveTintColor: colors.PRIMARY_TEXT_COLOR_LIGHT,
+    inactiveBackgroundColor: colors.PRIMARY_BACKGROUND_COLOR_LIGHT
   }
 };

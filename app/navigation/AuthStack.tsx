@@ -2,14 +2,15 @@ import React from "react";
 import { Icon } from "native-base";
 
 import { createBottomTabNavigator } from "react-navigation";
-import SignIn from "../scenes/Sign/SignIn";
-import SignUp from "../scenes/Sign/SignUp";
+import SignIn from "app/scenes/Sign/SignIn";
+import SignUp from "app/scenes/Sign/SignUp";
 import Theme from "app/resources/themes";
-import { withSafeAreaView } from "app/resources/themes/helper";
+import { withPadding } from "app/resources/themes/helper";
+
 const AuthStack = createBottomTabNavigator(
   {
-    SignIn: withSafeAreaView(SignIn),
-    SignUp: withSafeAreaView(SignUp)
+    SignIn: withPadding(SignIn),
+    SignUp: withPadding(SignUp)
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -25,10 +26,15 @@ const AuthStack = createBottomTabNavigator(
     }),
     tabBarOptions: {
       activeTintColor: Theme.stl.tab.activeTintColor,
+      activeBackgroundColor: Theme.stl.tab.activeBackgroundColor,
       inactiveTintColor: Theme.stl.tab.inactiveTintColor,
+      inactiveBackgroundColor: Theme.stl.tab.inactiveBackgroundColor,
       labelStyle: {
         fontFamily: Theme.base.PRIMARY_FONT_FAMILY
-      }
+      },
+      keyboardHidesTabBar: true,
+      // @ts-ignore
+      safeAreaInset: { bottom: "never", top: "never" }
     }
   }
 );
