@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { Text, Button, Item, Label, Input } from "native-base";
 import {
@@ -7,6 +7,8 @@ import {
   NavigationParams,
   ScrollView
 } from "react-navigation";
+import firebase from "react-native-firebase";
+
 import I18n, { toggleLanguage } from "app/helpers/i18n";
 import Theme from "app/resources/themes";
 
@@ -60,6 +62,16 @@ const SignIn = (props: Props) => {
     }
   };
 
+  useEffect(() => {
+    firebase
+      .auth()
+      .signInAnonymously()
+      .then(credential => {
+        if (credential) {
+          console.log("default app user ->", credential.user.toJSON());
+        }
+      });
+  });
   return (
     <View
       style={{
