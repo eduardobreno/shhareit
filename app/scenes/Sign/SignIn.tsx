@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
-import { Text, Button, Item, Label, Input } from "native-base";
+import { Text, Button, Item, Label, Input, Spinner } from "native-base";
 import {
   NavigationScreenProp,
   NavigationState,
   NavigationParams,
   ScrollView
 } from "react-navigation";
-import firebase from "react-native-firebase";
 
 import I18n, { toggleLanguage } from "app/helpers/i18n";
 import Theme from "app/resources/themes";
+import UserAPI from "app/services/api/userAPI";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState, NavigationParams>;
@@ -25,10 +25,8 @@ const SignIn = (props: Props) => {
     hasError: false,
     msg: ""
   });
-  const [hasConfirmPasswordError, setHasConfirmPasswordError] = useState({
-    hasError: false,
-    msg: ""
-  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateEmail = (email: string) => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -39,6 +37,7 @@ const SignIn = (props: Props) => {
       setHasEmailError(true);
     }
   };
+
   const validatePassword = (password: string) => {
     let hasError = false;
     let msg = "";
@@ -50,34 +49,30 @@ const SignIn = (props: Props) => {
     setHasPasswordError({ hasError, msg });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     validateEmail(email);
     validatePassword(password);
-    if (
-      !hasConfirmPasswordError.hasError &&
-      !hasPasswordError.hasError &&
-      !hasEmailError
-    ) {
-      console.log(email, password);
+    if (!hasPasswordError.hasError && !hasEmailError) {
+      setIsSubmitting(true);
+      const user = await UserAPI.loginUser(email, password);
+      if (user) {
+        navigation.navigate("Main", { firstTime: false, user });
+      } else {
+        setIsSubmitting(false);
+      }
     }
-    navigation.navigate("Main");
   };
 
   const handleSignUp = () => {
     navigation.navigate("SignUp");
   };
 
-  useEffect(() => {
-    // firebase
-    //   .auth().signInWithEmailAndPassword
-  });
   return (
     <View
       style={{
         flex: 1,
         flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "yellow"
+        alignItems: "center"
       }}
     >
       <ScrollView bounces={false}>
@@ -89,6 +84,7 @@ const SignIn = (props: Props) => {
           <Item stackedLabel error={hasEmailError}>
             <Label>E-mail</Label>
             <Input
+              value={email}
               keyboardType="email-address"
               onChangeText={email => validateEmail(email)}
             />
@@ -99,6 +95,7 @@ const SignIn = (props: Props) => {
           <Item stackedLabel error={hasPasswordError.hasError}>
             <Label>Password</Label>
             <Input
+              value={password}
               onChangeText={password => validatePassword(password)}
               secureTextEntry
             />
@@ -113,7 +110,10 @@ const SignIn = (props: Props) => {
             onPress={handleSubmit}
             style={Theme.stl.BTN_PADDING}
           >
-            <Text style={Theme.stl.BTN_TXT_NORMAL}>{I18n.t("login")}</Text>
+            {isSubmitting && <Spinner />}
+            {!isSubmitting && (
+              <Text style={Theme.stl.BTN_TXT_NORMAL}>{I18n.t("login")}</Text>
+            )}
           </Button>
           <View style={Theme.stl.divider} />
           <Text style={[Theme.stl.TXT_NORMAL, { alignSelf: "center" }]}>

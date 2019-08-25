@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Text, Button, Item, Label, Input, Toast } from "native-base";
+import { Text, Button, Item, Label, Input, Toast, Spinner } from "native-base";
 import {
   NavigationScreenProp,
   NavigationState,
@@ -18,9 +18,9 @@ interface Props {
 
 const SignUp = (props: Props) => {
   const { navigation } = props;
-  const [email, setEmail] = useState("e@e.com");
-  const [password, setPassword] = useState("123456a");
-  const [password2, setPassword2] = useState("123456a");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [hasEmailError, setHasEmailError] = useState(false);
   const [hasPasswordError, setHasPasswordError] = useState({
     hasError: false,
@@ -31,6 +31,8 @@ const SignUp = (props: Props) => {
     msg: ""
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const validateEmail = (email: string) => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     setEmail(email);
@@ -40,6 +42,7 @@ const SignUp = (props: Props) => {
       setHasEmailError(true);
     }
   };
+
   const validatePassword = (password: string) => {
     const reg = new RegExp(
       "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})"
@@ -77,16 +80,12 @@ const SignUp = (props: Props) => {
       !hasPasswordError.hasError &&
       !hasEmailError
     ) {
-      const result = await UserAPI.registerUser(email, password);
-      if (result.success) {
-        navigation.navigate("Main", { firstTime: true, user: result.user });
+      setIsSubmitting(true);
+      const user = await UserAPI.registerUser(email, password);
+      if (user) {
+        navigation.navigate("Main", { firstTime: true, user });
       } else {
-        Toast.show({
-          text: result.msg!,
-          buttonText: "Okay",
-          duration: 3000,
-          type: "danger"
-        });
+        setIsSubmitting(false);
       }
     }
   };
@@ -100,8 +99,7 @@ const SignUp = (props: Props) => {
       style={{
         flex: 1,
         flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "yellow"
+        alignItems: "center"
       }}
     >
       <ScrollView bounces={false}>
@@ -151,8 +149,12 @@ const SignUp = (props: Props) => {
             full
             onPress={handleSubmit}
             style={Theme.stl.BTN_PADDING}
+            disabled={isSubmitting}
           >
-            <Text style={Theme.stl.BTN_TXT_NORMAL}>{I18n.t("register")}</Text>
+            {isSubmitting && <Spinner />}
+            {!isSubmitting && (
+              <Text style={Theme.stl.BTN_TXT_NORMAL}>{I18n.t("register")}</Text>
+            )}
           </Button>
           <View style={Theme.stl.divider} />
           <Text style={[Theme.stl.TXT_NORMAL, { alignSelf: "center" }]}>
