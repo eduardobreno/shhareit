@@ -68,14 +68,8 @@ const SignIn = (props: Props) => {
   };
 
   useEffect(() => {
-    firebase
-      .auth()
-      .signInAnonymously()
-      .then(credential => {
-        if (credential) {
-          console.log("default app user ->", credential.user.toJSON());
-        }
-      });
+    // firebase
+    //   .auth().signInWithEmailAndPassword
   });
   return (
     <View

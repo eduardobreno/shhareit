@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Text, Button, Item, Label, Input } from "native-base";
+import { Text, Button, Item, Label, Input, Toast } from "native-base";
 import {
   NavigationScreenProp,
   NavigationState,
   NavigationParams,
   ScrollView
 } from "react-navigation";
+
 import I18n, { toggleLanguage } from "app/helpers/i18n";
 import Theme from "app/resources/themes";
+import UserAPI from "app/services/api/userAPI";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState, NavigationParams>;
@@ -16,9 +18,9 @@ interface Props {
 
 const SignUp = (props: Props) => {
   const { navigation } = props;
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [email, setEmail] = useState("e@e.com");
+  const [password, setPassword] = useState("123456a");
+  const [password2, setPassword2] = useState("123456a");
   const [hasEmailError, setHasEmailError] = useState(false);
   const [hasPasswordError, setHasPasswordError] = useState({
     hasError: false,
@@ -66,7 +68,7 @@ const SignUp = (props: Props) => {
     setHasConfirmPasswordError({ hasError, msg });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     validateEmail(email);
     validatePassword(password);
     confirmPassword(password2);
@@ -75,7 +77,17 @@ const SignUp = (props: Props) => {
       !hasPasswordError.hasError &&
       !hasEmailError
     ) {
-      console.log(email, password);
+      const result = await UserAPI.registerUser(email, password);
+      if (result.success) {
+        navigation.navigate("Main", { firstTime: true, user: result.user });
+      } else {
+        Toast.show({
+          text: result.msg!,
+          buttonText: "Okay",
+          duration: 3000,
+          type: "danger"
+        });
+      }
     }
   };
 
@@ -101,6 +113,7 @@ const SignUp = (props: Props) => {
           <Item stackedLabel error={hasEmailError}>
             <Label>E-mail</Label>
             <Input
+              value={email}
               keyboardType="email-address"
               onChangeText={email => validateEmail(email)}
             />
@@ -111,6 +124,7 @@ const SignUp = (props: Props) => {
           <Item stackedLabel error={hasPasswordError.hasError}>
             <Label>Password</Label>
             <Input
+              value={password}
               onChangeText={password => validatePassword(password)}
               secureTextEntry
             />
@@ -121,6 +135,7 @@ const SignUp = (props: Props) => {
           <Item stackedLabel error={hasConfirmPasswordError.hasError}>
             <Label>Type again to confirm your password</Label>
             <Input
+              value={password2}
               onChangeText={password => confirmPassword(password)}
               secureTextEntry
             />
