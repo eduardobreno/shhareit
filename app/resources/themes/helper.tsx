@@ -9,13 +9,9 @@ export const withPadding = (Component: React.ElementType) => {
       paddingRight: 20
     }
   });
-  return class extends React.Component {
-    render() {
-      return (
-        <View style={styles.container}>
-          <Component />
-        </View>
-      );
-    }
-  };
+  return (props: any) => (
+    <View style={styles.container}>
+      <Component {...props} />
+    </View>
+  );
 };

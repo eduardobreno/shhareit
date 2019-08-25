@@ -1,14 +1,15 @@
 export const base = {
   FONT_SIZE_TINY: 8,
-  FONT_SIZE_SMALL: 12,
+  FONT_SIZE_SMALL: 10,
+  FONT_SIZE_NORMAL: 12,
   FONT_SIZE_MEDIUM: 14,
-  FONT_SIZE_LARGE: 18,
-  FONT_SIZE_EXTRA_LARGE: 24,
-  FONT_SIZE_MASSIVE: 34,
+  FONT_SIZE_LARGE: 16,
+  FONT_SIZE_EXTRA_LARGE: 18,
+  FONT_SIZE_MASSIVE: 24,
 
-  FONT_WEIGHT_LIGHT: "200",
-  FONT_WEIGHT_MEDIUM: "500",
-  FONT_WEIGHT_BOLD: "700",
+  FONT_WEIGHT_LIGHT: 200,
+  FONT_WEIGHT_MEDIUM: 500,
+  FONT_WEIGHT_BOLD: 700,
 
   PRIMARY_FONT_FAMILY: "OpenSans-Regular",
   PRIMARY_FONT_FAMILY_BOLD: "OpenSans-ExtraBoldItalic",
@@ -95,7 +96,7 @@ export const colorOptions = {
 export const stl = {
   H1: {
     fontFamily: base.PRIMARY_FONT_FAMILY,
-    fontSize: base.FONT_SIZE_EXTRA_LARGE,
+    fontSize: base.FONT_SIZE_MASSIVE,
     color: colors.PRIMARY_TEXT_COLOR
   },
   H2: {
@@ -113,10 +114,22 @@ export const stl = {
     fontSize: base.FONT_SIZE_MEDIUM,
     color: colors.PRIMARY_ERROR_TEXT_COLOR
   },
-  BTN_SUBMIT: {},
-  BTN_TXT_SUBMIT: {
+  BTN_PADDING: {
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 20,
+    marginBottom: 20
+  },
+  BTN_TXT_NORMAL: {
     fontFamily: base.PRIMARY_FONT_FAMILY,
-    fontSize: base.FONT_SIZE_MEDIUM
+    fontSize: base.FONT_SIZE_LARGE
+  },
+  divider: {
+    flex: 1,
+    backgroundColor: "#ccc",
+    marginTop: 5,
+    marginBottom: 5,
+    height: 1
   },
   tab: {
     activeTintColor: colors.PRIMARY_TEXT_COLOR,

@@ -60,6 +60,11 @@ const SignIn = (props: Props) => {
     ) {
       console.log(email, password);
     }
+    navigation.navigate("Main");
+  };
+
+  const handleSignUp = () => {
+    navigation.navigate("SignUp");
   };
 
   useEffect(() => {
@@ -81,10 +86,8 @@ const SignIn = (props: Props) => {
         backgroundColor: "yellow"
       }}
     >
-      <ScrollView>
-        <Text style={[Theme.stl.H1, { alignSelf: "center" }]}>
-          Welcome to Shhare it!
-        </Text>
+      <ScrollView bounces={false}>
+        <Text style={[Theme.stl.H1, { alignSelf: "center" }]}>Shhare it!</Text>
         <Text style={[Theme.stl.TXT_NORMAL, { alignSelf: "center" }]}>
           Type your crendentials to sign in
         </Text>
@@ -114,9 +117,21 @@ const SignIn = (props: Props) => {
             bordered
             full
             onPress={handleSubmit}
-            style={{ marginTop: 20 }}
+            style={Theme.stl.BTN_PADDING}
           >
-            <Text style={Theme.stl.BTN_TXT_SUBMIT}>{I18n.t("signIn")}</Text>
+            <Text style={Theme.stl.BTN_TXT_NORMAL}>{I18n.t("login")}</Text>
+          </Button>
+          <View style={Theme.stl.divider} />
+          <Text style={[Theme.stl.TXT_NORMAL, { alignSelf: "center" }]}>
+            New user?
+          </Text>
+          <Button
+            full
+            transparent
+            onPress={handleSignUp}
+            style={Theme.stl.BTN_PADDING}
+          >
+            <Text style={Theme.stl.BTN_TXT_NORMAL}>{I18n.t("register")}</Text>
           </Button>
         </View>
       </ScrollView>

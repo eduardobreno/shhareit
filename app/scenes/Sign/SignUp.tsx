@@ -79,6 +79,10 @@ const SignUp = (props: Props) => {
     }
   };
 
+  const handleSignIn = () => {
+    navigation.navigate("SignIn");
+  };
+
   return (
     <View
       style={{
@@ -88,12 +92,10 @@ const SignUp = (props: Props) => {
         backgroundColor: "yellow"
       }}
     >
-      <ScrollView>
-        <Text style={[Theme.stl.H1, { alignSelf: "center" }]}>
-          Welcome to Shhare it!
-        </Text>
+      <ScrollView bounces={false}>
+        <Text style={[Theme.stl.H1, { alignSelf: "center" }]}>Shhare it!</Text>
         <Text style={[Theme.stl.H2, { alignSelf: "center" }]}>
-          You can start to share medias with secret!
+          You can start to share medias with secret after your register
         </Text>
         <View style={{ marginTop: 20 }}>
           <Item stackedLabel error={hasEmailError}>
@@ -133,9 +135,21 @@ const SignUp = (props: Props) => {
             bordered
             full
             onPress={handleSubmit}
-            style={{ marginTop: 20 }}
+            style={Theme.stl.BTN_PADDING}
           >
-            <Text style={Theme.stl.BTN_TXT_SUBMIT}>{I18n.t("signUp")}</Text>
+            <Text style={Theme.stl.BTN_TXT_NORMAL}>{I18n.t("register")}</Text>
+          </Button>
+          <View style={Theme.stl.divider} />
+          <Text style={[Theme.stl.TXT_NORMAL, { alignSelf: "center" }]}>
+            Already a user?
+          </Text>
+          <Button
+            transparent
+            full
+            onPress={handleSignIn}
+            style={Theme.stl.BTN_PADDING}
+          >
+            <Text style={Theme.stl.BTN_TXT_NORMAL}>{I18n.t("login")}</Text>
           </Button>
         </View>
       </ScrollView>
