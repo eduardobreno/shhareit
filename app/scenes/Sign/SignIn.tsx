@@ -11,6 +11,7 @@ import {
 import I18n, { toggleLanguage } from "app/helpers/i18n";
 import Theme from "app/resources/themes";
 import UserAPI from "app/services/api/userAPI";
+import firebase from "react-native-firebase";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState, NavigationParams>;
@@ -66,6 +67,14 @@ const SignIn = (props: Props) => {
   const handleSignUp = () => {
     navigation.navigate("SignUp");
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (UserAPI.isUserLogged()) {
+        navigation.navigate("Main", { firstTime: false, user: {} });
+      }
+    }, 500);
+  });
 
   return (
     <View

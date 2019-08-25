@@ -27,7 +27,6 @@ async function loginUser(
     const data = await firebase
       .auth()
       .signInWithEmailAndPassword(email, password);
-    console.log("loginUser - ", data);
     const user = new User(data.user);
     return user;
   } catch (e) {
@@ -36,9 +35,23 @@ async function loginUser(
   }
 }
 
+function logout() {
+  firebase.auth().signOut();
+}
+
+function isUserLogged(): boolean {
+  if (firebase.auth().currentUser) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 const UserAPI = {
   registerUser,
-  loginUser
+  loginUser,
+  isUserLogged,
+  logout
 };
 
 export default UserAPI;
