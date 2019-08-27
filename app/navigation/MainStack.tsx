@@ -20,6 +20,7 @@ const TabsStack = createBottomTabNavigator(
     Settings: Settings
   },
   {
+    initialRouteName: "Settings",
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: _ => {
         const { routeName } = navigation.state;

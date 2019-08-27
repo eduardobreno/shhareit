@@ -71,10 +71,10 @@ const SignIn = (props: Props) => {
   useEffect(() => {
     setTimeout(() => {
       if (UserAPI.isUserLogged()) {
-        navigation.navigate("Main", { firstTime: false, user: {} });
+        navigation.navigate("Settings", { isCompleted: false });
       }
     }, 500);
-  });
+  }, []);
 
   return (
     <View

@@ -47,10 +47,16 @@ function isUserLogged(): boolean {
   }
 }
 
+function getUserInfo() {
+  console.log("firebase.auth().currentUser", firebase.auth().currentUser);
+  return new User(firebase.auth().currentUser);
+}
+
 const UserAPI = {
   registerUser,
   loginUser,
   isUserLogged,
+  getUserInfo,
   logout
 };
 

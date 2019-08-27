@@ -26,6 +26,6 @@ module.exports = {
   },
   rules: {
     "prettier/prettier": "error",
-    "max-len": ["error", { "code": 80, "ignoreUrls": true }]
+    "max-len": ["error", { code: 80, ignoreUrls: true }]
   }
 };
