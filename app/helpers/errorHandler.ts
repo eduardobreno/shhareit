@@ -30,3 +30,12 @@ export const firebaseError = (error: { code: any }): boolean => {
       return false;
   }
 };
+
+export const customError = (message: string) => {
+  Toast.show({
+    text: message,
+    buttonText: "OK",
+    duration: 2000,
+    type: "danger"
+  });
+};

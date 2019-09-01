@@ -4,6 +4,7 @@ import User from "app/entities/UserEntity";
 import { firebaseError } from "app/helpers/errorHandler";
 import { CollectionReference } from "react-native-firebase/firestore";
 import { Auth } from "react-native-firebase/auth";
+import { UploadTaskSnapshot } from "react-native-firebase/storage";
 
 const userCollection = "users";
 
@@ -49,7 +50,6 @@ async function updateUser(userData: {
   displayName: string;
   username: string;
   bio: string;
-  photoURL: string;
 }): Promise<boolean> {
   const cl = getCollection();
   try {
@@ -58,6 +58,33 @@ async function updateUser(userData: {
   } catch (e) {
     return false;
   }
+}
+
+async function updateUserPhoto(userData: {
+  photoURL: string | null;
+}): Promise<boolean> {
+  const cl = getCollection();
+  try {
+    const user = await cl.doc(getData().id).update(userData);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+async function uploadProfilePhoto(
+  imageUri: string,
+  success: (snapshot: UploadTaskSnapshot) => void,
+  error: (error: any) => void
+) {
+  const ext = imageUri.split(".").pop();
+  const filename = `${currentUser.id}.${ext}`;
+  firebase
+    .storage()
+    .ref(`profiles/${filename}`)
+    .putFile(imageUri)
+    // @ts-ignore
+    .on(firebase.storage.TaskEvent.STATE_CHANGED, success, error);
 }
 
 async function loginUser(
@@ -100,6 +127,8 @@ function getData() {
 const UserAPI = {
   registerUser,
   updateUser,
+  uploadProfilePhoto,
+  updateUserPhoto,
   loginUser,
   isUserLogged,
   getData,

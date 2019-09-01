@@ -39,6 +39,8 @@ target 'shhareit' do
   pod 'Crashlytics', '~> 3.13.2'
   pod 'Firebase/Storage', '~> 6.3.0'
 
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
   target 'shhareitTests' do
     inherit! :search_paths
     # Pods for testing
