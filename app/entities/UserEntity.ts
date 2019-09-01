@@ -8,7 +8,7 @@ class User {
   metadata: string;
 
   constructor({
-    uid,
+    id,
     displayName,
     photoURL,
     bio,
@@ -16,7 +16,7 @@ class User {
     email,
     metadata
   }: any = {}) {
-    this.id = uid;
+    this.id = id;
     this.displayName = displayName || undefined;
     this.photoURL = photoURL || undefined;
     this.bio = bio || undefined;

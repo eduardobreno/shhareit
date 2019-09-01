@@ -114,6 +114,13 @@ export const stl = {
     fontSize: base.FONT_SIZE_MEDIUM,
     color: colors.PRIMARY_ERROR_TEXT_COLOR
   },
+  TXT_DIVIDER: {
+    backgroundColor: "#ccc",
+    paddingTop: 1,
+    paddingBottom: 1,
+    marginTop: 10,
+    marginBottom: 10
+  },
   BTN_PADDING: {
     marginLeft: 20,
     marginRight: 20,

@@ -12,7 +12,7 @@ import UserAPI from "app/services/api/userAPI";
 import User from "app/entities/UserEntity";
 import { withPadding } from "app/resources/themes/helper";
 import Theme from "app/resources/themes";
-import { Input, Button } from "app/components/Elements";
+import { Input, Button, Textarea, LabelDivider } from "app/components/Elements";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState, NavigationParams>;
@@ -20,9 +20,16 @@ interface Props {
 
 function Settings(props: Props) {
   const { navigation } = props;
-  const [user, setUser] = useState<User>(UserAPI.getUserInfo());
+  const [user, setUser] = useState<User>(UserAPI.getData());
   const [photo, setPhoto] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const save = async () => {
+    setIsSaving(true);
+    await UserAPI.updateUser(user);
+    setIsSaving(false);
+  };
 
   const logout = () => {
     setIsSubmitting(true);
@@ -33,23 +40,11 @@ function Settings(props: Props) {
   };
 
   useEffect(() => {
-    // setUser(UserAPI.getUserInfo());
-    // UserAPI.updateUser({
-    //   displayName: "joao",
-    //   username: "username",
-    //   bio: "bio vazia",
-    //   photoURL: "url da foto"
-    // });
-  }, []);
-
-  useEffect(() => {
-    console.log(user);
     if (user && user.photoURL) {
       setPhoto({ uri: user.photoURL });
     } else {
       setPhoto(require("app/assets/images/placeholder_profile.png"));
     }
-    console.log(photo);
   }, [user]);
 
   return (
@@ -59,29 +54,35 @@ function Settings(props: Props) {
         marginTop: 20
       }}>
       <ScrollView bounces={false}>
+        <LabelDivider>Public info</LabelDivider>
         <Thumbnail
           circular
           large
           source={photo}
           style={{ alignSelf: "center" }}
         />
-
         <Input
           label="Display Name"
           value={user.displayName}
-          onChangeText={email => {}}
+          onChangeText={displayName => setUser({ ...user, displayName })}
         />
         <Input
           label="Username"
-          value={user.displayName}
-          onChangeText={email => {}}
+          value={user.username}
+          onChangeText={username => setUser({ ...user, username })}
         />
-        <Input
-          label="E-mail"
-          keyboardType="email-address"
-          value={user.displayName}
-          onChangeText={email => {}}
+        <Textarea
+          label="Bio"
+          rowSpan={3}
+          underline
+          bordered={false}
+          value={user.bio}
+          onChangeText={bio => setUser({ ...user, bio })}
         />
+        <LabelDivider>Private info</LabelDivider>
+        <Input label="E-mail" value={user.email} editable={false} />
+
+        <Button showSpinner={isSaving} onPress={save} label={I18n.t("save")} />
         <Button
           transparent
           showSpinner={isSubmitting}

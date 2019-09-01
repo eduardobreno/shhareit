@@ -70,13 +70,14 @@ const SignIn = (props: Props) => {
   const handleSignUp = () => {
     navigation.navigate("SignUp");
   };
-
+  const isLogged = async () => {
+    const isON = await UserAPI.isUserLogged();
+    if (isON) {
+      navigation.navigate("Settings", { isCompleted: false });
+    }
+  };
   useEffect(() => {
-    setTimeout(() => {
-      if (UserAPI.isUserLogged()) {
-        navigation.navigate("Settings", { isCompleted: false });
-      }
-    }, 500);
+    isLogged();
   }, []);
 
   return (

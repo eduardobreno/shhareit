@@ -1,28 +1,28 @@
 import React from "react";
-import { KeyboardTypeOptions } from "react-native";
+import { KeyboardTypeOptions, View } from "react-native";
 import {
   Text,
   Label,
   Item,
   Input as InputNB,
   Button as ButtonNB,
-  Spinner
+  Spinner,
+  NativeBase,
+  Textarea as TextareaNB
 } from "native-base";
 
 import Theme from "app/resources/themes";
 
-interface InputProps {
+interface InputProps extends NativeBase.Input {
   label: string;
   value: string;
   hasError?: boolean;
   errorMsg?: string;
-  onChangeText: (text: string) => void;
-  secureTextEntry?: boolean;
-  keyboardType?: KeyboardTypeOptions;
+  textarea?: boolean;
 }
 
 export const Input = (props: InputProps) => {
-  const { label, value, hasError, errorMsg } = props;
+  const { label, value, hasError, errorMsg, textarea } = props;
   return (
     <Item stackedLabel error={hasError}>
       <Label>{label}</Label>
@@ -32,12 +32,30 @@ export const Input = (props: InputProps) => {
   );
 };
 
-interface ButtonProps {
+interface TextAreaProps extends NativeBase.Textarea {
   label: string;
-  showSpinner?: boolean;
+  value: string;
+  hasError?: boolean;
+  errorMsg?: string;
+  textarea?: boolean;
+}
+
+export const Textarea = (props: TextAreaProps) => {
+  const { label, value, hasError, errorMsg } = props;
+  return (
+    <Item stackedLabel error={hasError}>
+      <Label>{label}</Label>
+      <TextareaNB {...props} style={{ width: "100%" }} value={value} />
+
+      {hasError && <Text style={Theme.stl.TXT_ERROR}>{errorMsg}</Text>}
+    </Item>
+  );
+};
+
+interface ButtonProps extends NativeBase.Button {
+  label: string;
   onPress: () => void;
-  bordered?: boolean;
-  transparent?: boolean;
+  showSpinner?: boolean;
 }
 
 export const Button = (props: ButtonProps) => {
@@ -47,10 +65,23 @@ export const Button = (props: ButtonProps) => {
       bordered={bordered}
       full
       transparent={transparent}
-      onPress={onPress}
+      onPress={() => {
+        !showSpinner && onPress();
+      }}
       style={Theme.stl.BTN_PADDING}>
       {showSpinner && <Spinner />}
       {!showSpinner && <Text style={Theme.stl.BTN_TXT_NORMAL}>{label}</Text>}
     </ButtonNB>
+  );
+};
+
+interface LabelDividerProps {
+  children: string;
+}
+export const LabelDivider = ({ children }: LabelDividerProps) => {
+  return (
+    <View style={[Theme.stl.TXT_DIVIDER]}>
+      <Text style={[Theme.stl.TXT_NORMAL]}>{children}</Text>
+    </View>
   );
 };
