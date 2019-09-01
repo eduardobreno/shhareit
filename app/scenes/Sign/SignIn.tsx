@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
-import { Text, Button, Item, Label, Input, Spinner } from "native-base";
+import { View } from "react-native";
+import { Text, Spinner } from "native-base";
 import {
   NavigationScreenProp,
   NavigationState,
@@ -8,10 +8,11 @@ import {
   ScrollView
 } from "react-navigation";
 
+import { Input, Button } from "app/components/Elements";
+
 import I18n, { toggleLanguage } from "app/helpers/i18n";
 import Theme from "app/resources/themes";
 import UserAPI from "app/services/api/userAPI";
-import firebase from "react-native-firebase";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState, NavigationParams>;
@@ -19,8 +20,7 @@ interface Props {
 
 const SignIn = (props: Props) => {
   const { navigation } = props;
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [crendential, setCrendential] = useState({ email: "", password: "" });
   const [hasEmailError, setHasEmailError] = useState(false);
   const [hasPasswordError, setHasPasswordError] = useState({
     hasError: false,
@@ -31,7 +31,7 @@ const SignIn = (props: Props) => {
 
   const validateEmail = (email: string) => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    setEmail(email);
+    setCrendential({ ...crendential, email });
     if (reg.test(email)) {
       setHasEmailError(false);
     } else {
@@ -42,7 +42,7 @@ const SignIn = (props: Props) => {
   const validatePassword = (password: string) => {
     let hasError = false;
     let msg = "";
-    setPassword(password);
+    setCrendential({ ...crendential, password });
     if (password.length == 0) {
       hasError = true;
       msg = "Type your password";
@@ -51,11 +51,14 @@ const SignIn = (props: Props) => {
   };
 
   const handleSubmit = async () => {
-    validateEmail(email);
-    validatePassword(password);
+    validateEmail(crendential.email);
+    validatePassword(crendential.password);
     if (!hasPasswordError.hasError && !hasEmailError) {
       setIsSubmitting(true);
-      const user = await UserAPI.loginUser(email, password);
+      const user = await UserAPI.loginUser(
+        crendential.email,
+        crendential.password
+      );
       if (user) {
         navigation.navigate("Main", { firstTime: false, user });
       } else {
@@ -82,60 +85,46 @@ const SignIn = (props: Props) => {
         flex: 1,
         flexDirection: "row",
         alignItems: "center"
-      }}
-    >
+      }}>
       <ScrollView bounces={false}>
         <Text style={[Theme.stl.H1, { alignSelf: "center" }]}>Shhare it!</Text>
         <Text style={[Theme.stl.TXT_NORMAL, { alignSelf: "center" }]}>
           Type your crendentials to sign in
         </Text>
         <View style={{ marginTop: 20 }}>
-          <Item stackedLabel error={hasEmailError}>
-            <Label>E-mail</Label>
-            <Input
-              value={email}
-              keyboardType="email-address"
-              onChangeText={email => validateEmail(email)}
-            />
-            {hasEmailError && (
-              <Text style={Theme.stl.TXT_ERROR}>Invalid email</Text>
-            )}
-          </Item>
-          <Item stackedLabel error={hasPasswordError.hasError}>
-            <Label>Password</Label>
-            <Input
-              value={password}
-              onChangeText={password => validatePassword(password)}
-              secureTextEntry
-            />
-            {hasPasswordError.hasError && (
-              <Text style={Theme.stl.TXT_ERROR}>{hasPasswordError.msg}</Text>
-            )}
-          </Item>
+          <Input
+            label="E-mail"
+            value={crendential.email}
+            keyboardType="email-address"
+            hasError={hasEmailError}
+            errorMsg={"Invalid email"}
+            onChangeText={email => validateEmail(email)}
+          />
+
+          <Input
+            label="Password"
+            value={crendential.password}
+            hasError={hasPasswordError.hasError}
+            errorMsg={hasPasswordError.msg}
+            onChangeText={password => validatePassword(password)}
+            secureTextEntry
+          />
 
           <Button
             bordered
-            full
             onPress={handleSubmit}
-            style={Theme.stl.BTN_PADDING}
-          >
-            {isSubmitting && <Spinner />}
-            {!isSubmitting && (
-              <Text style={Theme.stl.BTN_TXT_NORMAL}>{I18n.t("login")}</Text>
-            )}
-          </Button>
+            showSpinner={isSubmitting}
+            label={I18n.t("login")}
+          />
           <View style={Theme.stl.divider} />
           <Text style={[Theme.stl.TXT_NORMAL, { alignSelf: "center" }]}>
             New user?
           </Text>
           <Button
-            full
             transparent
             onPress={handleSignUp}
-            style={Theme.stl.BTN_PADDING}
-          >
-            <Text style={Theme.stl.BTN_TXT_NORMAL}>{I18n.t("register")}</Text>
-          </Button>
+            label={I18n.t("register")}
+          />
         </View>
       </ScrollView>
     </View>

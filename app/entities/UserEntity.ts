@@ -15,7 +15,7 @@ class User {
     username,
     email,
     metadata
-  }: any) {
+  }: any = {}) {
     this.id = uid;
     this.displayName = displayName || undefined;
     this.photoURL = photoURL || undefined;

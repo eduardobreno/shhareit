@@ -18,8 +18,7 @@ interface Props {
 
 const SignUp = (props: Props) => {
   const { navigation } = props;
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [crendential, setCrendential] = useState({ email: "", password: "" });
   const [password2, setPassword2] = useState("");
   const [hasEmailError, setHasEmailError] = useState(false);
   const [hasPasswordError, setHasPasswordError] = useState({
@@ -35,7 +34,7 @@ const SignUp = (props: Props) => {
 
   const validateEmail = (email: string) => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    setEmail(email);
+    setCrendential({ ...crendential, email });
     if (reg.test(email)) {
       setHasEmailError(false);
     } else {
@@ -49,7 +48,7 @@ const SignUp = (props: Props) => {
     );
     let hasError = false;
     let msg = "";
-    setPassword(password);
+    setCrendential({ ...crendential, password });
     if (password.length < 6) {
       hasError = true;
       msg = "Use at lest 6 characters";
@@ -64,7 +63,7 @@ const SignUp = (props: Props) => {
     let hasError = false;
     let msg = "";
     setPassword2(pwd);
-    if (pwd !== password) {
+    if (pwd !== crendential.password) {
       hasError = true;
       msg = "Could not confirm the password, type right";
     }
@@ -72,8 +71,8 @@ const SignUp = (props: Props) => {
   };
 
   const handleSubmit = async () => {
-    validateEmail(email);
-    validatePassword(password);
+    validateEmail(crendential.email);
+    validatePassword(crendential.password);
     confirmPassword(password2);
     if (
       !hasConfirmPasswordError.hasError &&
@@ -81,7 +80,10 @@ const SignUp = (props: Props) => {
       !hasEmailError
     ) {
       setIsSubmitting(true);
-      const user = await UserAPI.registerUser(email, password);
+      const user = await UserAPI.registerUser(
+        crendential.email,
+        crendential.password
+      );
       if (user) {
         navigation.navigate("Main", { firstTime: true, user });
       } else {
@@ -111,7 +113,7 @@ const SignUp = (props: Props) => {
           <Item stackedLabel error={hasEmailError}>
             <Label>E-mail</Label>
             <Input
-              value={email}
+              value={crendential.email}
               keyboardType="email-address"
               onChangeText={email => validateEmail(email)}
             />
@@ -122,7 +124,7 @@ const SignUp = (props: Props) => {
           <Item stackedLabel error={hasPasswordError.hasError}>
             <Label>Password</Label>
             <Input
-              value={password}
+              value={crendential.password}
               onChangeText={password => validatePassword(password)}
               secureTextEntry
             />

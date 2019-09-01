@@ -16,11 +16,12 @@ import {
 } from "react-native";
 import Theme from "./resources/themes";
 
-// YellowBox.ignoreWarnings([
-//   "Warning: componentWillMount is deprecated",
-//   "Warning: componentWillUpdate is deprecated",
-//   "Warning: componentWillReceiveProps is deprecated"
-// ]);
+YellowBox.ignoreWarnings([
+  // "Require cycle:"
+  // "Warning: componentWillMount is deprecated",
+  // "Warning: componentWillUpdate is deprecated",
+  // "Warning: componentWillReceiveProps is deprecated"
+]);
 function App() {
   const styles = StyleSheet.create({
     container: {
