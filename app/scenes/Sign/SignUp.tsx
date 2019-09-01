@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
-import { Text, Button, Item, Label, Input, Toast, Spinner } from "native-base";
+import { View } from "react-native";
+import { Text } from "native-base";
 import {
   NavigationScreenProp,
   NavigationState,
@@ -11,6 +11,7 @@ import {
 import I18n, { toggleLanguage } from "app/helpers/i18n";
 import Theme from "app/resources/themes";
 import UserAPI from "app/services/api/userAPI";
+import { Input, Button } from "app/components/Elements";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState, NavigationParams>;
@@ -65,7 +66,7 @@ const SignUp = (props: Props) => {
     setPassword2(pwd);
     if (pwd !== crendential.password) {
       hasError = true;
-      msg = "Could not confirm the password, type right";
+      msg = "Could not confirm the password";
     }
     setHasConfirmPasswordError({ hasError, msg });
   };
@@ -102,74 +103,48 @@ const SignUp = (props: Props) => {
         flex: 1,
         flexDirection: "row",
         alignItems: "center"
-      }}
-    >
+      }}>
       <ScrollView bounces={false}>
         <Text style={[Theme.stl.H1, { alignSelf: "center" }]}>Shhare it!</Text>
         <Text style={[Theme.stl.H2, { alignSelf: "center" }]}>
           You can start to share medias with secret after your register
         </Text>
         <View style={{ marginTop: 20 }}>
-          <Item stackedLabel error={hasEmailError}>
-            <Label>E-mail</Label>
-            <Input
-              value={crendential.email}
-              keyboardType="email-address"
-              onChangeText={email => validateEmail(email)}
-            />
-            {hasEmailError && (
-              <Text style={Theme.stl.TXT_ERROR}>Invalid email</Text>
-            )}
-          </Item>
-          <Item stackedLabel error={hasPasswordError.hasError}>
-            <Label>Password</Label>
-            <Input
-              value={crendential.password}
-              onChangeText={password => validatePassword(password)}
-              secureTextEntry
-            />
-            {hasPasswordError.hasError && (
-              <Text style={Theme.stl.TXT_ERROR}>{hasPasswordError.msg}</Text>
-            )}
-          </Item>
-          <Item stackedLabel error={hasConfirmPasswordError.hasError}>
-            <Label>Type again to confirm your password</Label>
-            <Input
-              value={password2}
-              onChangeText={password => confirmPassword(password)}
-              secureTextEntry
-            />
-            {hasConfirmPasswordError.hasError && (
-              <Text style={Theme.stl.TXT_ERROR}>
-                {hasConfirmPasswordError.msg}
-              </Text>
-            )}
-          </Item>
+          <Input
+            label="E-mail"
+            value={crendential.email}
+            hasError={hasEmailError}
+            errorMsg={"Invalid email"}
+            onChangeText={email => validateEmail(email)}
+          />
+          <Input
+            label="Password"
+            value={crendential.password}
+            hasError={hasPasswordError.hasError}
+            errorMsg={hasPasswordError.msg}
+            onChangeText={password => validatePassword(password)}
+            secureTextEntry
+          />
+          <Input
+            label="Type again to confirm your password"
+            value={password2}
+            hasError={hasConfirmPasswordError.hasError}
+            errorMsg={hasConfirmPasswordError.msg}
+            onChangeText={password => confirmPassword(password)}
+            secureTextEntry
+          />
 
           <Button
             bordered
-            full
             onPress={handleSubmit}
-            style={Theme.stl.BTN_PADDING}
-            disabled={isSubmitting}
-          >
-            {isSubmitting && <Spinner />}
-            {!isSubmitting && (
-              <Text style={Theme.stl.BTN_TXT_NORMAL}>{I18n.t("register")}</Text>
-            )}
-          </Button>
+            showSpinner={isSubmitting}
+            label={I18n.t("register")}
+          />
           <View style={Theme.stl.divider} />
           <Text style={[Theme.stl.TXT_NORMAL, { alignSelf: "center" }]}>
-            Already a user?
+            New user?
           </Text>
-          <Button
-            transparent
-            full
-            onPress={handleSignIn}
-            style={Theme.stl.BTN_PADDING}
-          >
-            <Text style={Theme.stl.BTN_TXT_NORMAL}>{I18n.t("login")}</Text>
-          </Button>
+          <Button transparent onPress={handleSignIn} label={I18n.t("login")} />
         </View>
       </ScrollView>
     </View>
