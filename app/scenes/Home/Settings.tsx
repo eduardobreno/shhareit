@@ -15,6 +15,7 @@ import { withPadding } from "app/resources/themes/helper";
 import Theme from "app/resources/themes";
 import { Input, Button, Textarea, LabelDivider } from "app/components/Elements";
 import { customError } from "app/helpers/errorHandler";
+import { askDefaultPermission } from "app/services/api/permissionAPI";
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState, NavigationParams>;
@@ -50,8 +51,9 @@ function Settings(props: Props) {
     }, 500);
   };
 
-  const pickImage = () => {
-    customError("Couldn't upload your photo, sorry! =[");
+  const pickImage = async () => {
+    const hasPermission = await askDefaultPermission();
+    if (!hasPermission) return;
     ImagePicker.showImagePicker(options, response => {
       if (response.error) {
         customError("Couldn't upload your photo, sorry! =[");
@@ -77,7 +79,6 @@ function Settings(props: Props) {
       }
     });
   };
-
   useEffect(() => {
     if (user && user.photoURL) {
       setPhoto({ uri: user.photoURL });

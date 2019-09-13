@@ -41,6 +41,8 @@ target 'shhareit' do
 
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
+  pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
+
   target 'shhareitTests' do
     inherit! :search_paths
     # Pods for testing
@@ -49,15 +51,6 @@ target 'shhareit' do
   use_native_modules!
 end
 
-target 'shhareit-tvOS' do
-  # Pods for shhareit-tvOS
-
-  target 'shhareit-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end
 
 post_install do |installer|
     installer.pods_project.targets.each do |target|
