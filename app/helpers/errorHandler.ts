@@ -1,7 +1,7 @@
 import { Toast } from "native-base";
 
 export const firebaseError = (error: { code: any }): boolean => {
-  console.log("firebaseError", error.code);
+  console.log("firebaseError", error);
   switch (error.code) {
     case "auth/email-already-in-use":
       Toast.show({
