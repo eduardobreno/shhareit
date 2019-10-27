@@ -8,7 +8,8 @@ import {
   Button as ButtonNB,
   Spinner,
   NativeBase,
-  Textarea as TextareaNB
+  Textarea as TextareaNB,
+  Icon
 } from "native-base";
 
 import Theme from "app/resources/themes";
@@ -55,11 +56,12 @@ export const Textarea = (props: TextAreaProps) => {
 interface ButtonProps extends NativeBase.Button {
   label: string;
   onPress: () => void;
+  icon?: string;
   showSpinner?: boolean;
 }
 
 export const Button = (props: ButtonProps) => {
-  const { onPress, bordered, transparent, showSpinner, label } = props;
+  const { onPress, bordered, transparent, showSpinner, label, icon } = props;
   return (
     <ButtonNB
       bordered={bordered}
@@ -71,6 +73,7 @@ export const Button = (props: ButtonProps) => {
       style={Theme.stl.BTN_PADDING}>
       {showSpinner && <Spinner />}
       {!showSpinner && <Text style={Theme.stl.BTN_TXT_NORMAL}>{label}</Text>}
+      {icon && <Icon name={icon} />}
     </ButtonNB>
   );
 };

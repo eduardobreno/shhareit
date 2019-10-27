@@ -59,8 +59,11 @@ const SignIn = (props: Props) => {
         crendential.email,
         crendential.password
       );
+      console.log(user);
       if (user) {
-        navigation.navigate("Main", { firstTime: false, user });
+        UserAPI.getData().isCompleted
+          ? navigation.navigate("Main")
+          : navigation.navigate("Settings", { isCompleted: false });
       } else {
         setIsSubmitting(false);
       }
@@ -70,15 +73,6 @@ const SignIn = (props: Props) => {
   const handleSignUp = () => {
     navigation.navigate("SignUp");
   };
-  const isLogged = async () => {
-    const isON = await UserAPI.isUserLogged();
-    if (isON) {
-      navigation.navigate("Settings", { isCompleted: false });
-    }
-  };
-  useEffect(() => {
-    isLogged();
-  }, []);
 
   return (
     <View

@@ -50,10 +50,18 @@ async function updateUser(userData: {
   displayName: string;
   username: string;
   bio: string;
+  isCompleted?: boolean;
 }): Promise<boolean> {
   const cl = getCollection();
   try {
-    const user = await cl.doc(getData().id).update(userData);
+    if (userData.displayName && userData.username) {
+      userData.isCompleted = true;
+    } else {
+      userData.isCompleted = false;
+    }
+    await cl.doc(getData().id).update(userData);
+    const user = await getUserData();
+    currentUser = new User(user.data());
     return true;
   } catch (e) {
     return false;

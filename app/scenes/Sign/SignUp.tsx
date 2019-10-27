@@ -86,7 +86,7 @@ const SignUp = (props: Props) => {
         crendential.password
       );
       if (user) {
-        navigation.navigate("Main", { firstTime: true, user });
+        navigation.navigate("Settings", { isCompleted: false });
       } else {
         setIsSubmitting(false);
       }

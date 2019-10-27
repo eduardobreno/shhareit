@@ -5,43 +5,24 @@ import { Alert, Platform } from "react-native";
 
 export async function askDefaultPermission() {
   const response = await Permissions.checkMultiple(["camera", "photo"]);
+  console.log(response);
   switch (response.photo) {
     case "undetermined":
-    case "denied":
       return alertForPermission(response.photo, "photo");
+    case "denied":
+      return alertNoPermission();
     case "restricted":
-      Alert.alert("We don't have permission", "You need to set it manually", [
-        {
-          text: "No way",
-          onPress: () => Promise.resolve(false),
-          style: "cancel"
-        },
-        {
-          text: "Open Setting",
-          onPress: AndroidOpenSettings.appDetailsSettings
-        }
-      ]);
-      break;
+      return alertNoPermission();
     case "authorized":
       return Promise.resolve(true);
   }
   switch (response.camera) {
     case "undetermined":
+      return alertForPermission(response.photo, "photo");
     case "denied":
-      return alertForPermission(response.camera, "camera");
+      return alertNoPermission();
     case "restricted":
-      Alert.alert("We don't have permission", "You need to set it manually", [
-        {
-          text: "No way",
-          onPress: () => Promise.resolve(false),
-          style: "cancel"
-        },
-        {
-          text: "Open Setting",
-          onPress: AndroidOpenSettings.appDetailsSettings
-        }
-      ]);
-      break;
+      return alertNoPermission();
     case "authorized":
       return Promise.resolve(true);
   }
@@ -49,35 +30,58 @@ export async function askDefaultPermission() {
 
 async function requestPermission(permission: string) {
   const result = await Permissions.request(permission);
-  console.log("requestPermission", result);
   if (result == "denied") {
     return alertForPermission(result, permission);
   } else {
-    Promise.resolve(true);
+    return Promise.resolve(true);
   }
 }
 
-async function alertForPermission(status: string, permission: string) {
-  Alert.alert(
-    "Can we access your photos?",
-    "We need access so you can set your profile pic",
-    [
+function alertNoPermission(status) {
+  return new Promise(resolve => {
+    Alert.alert("We don't have permission", "You need to set it manually", [
       {
         text: "No way",
-        onPress: () => Promise.resolve(false),
+        onPress: () => resolve(false),
         style: "cancel"
       },
-      status == "undetermined"
-        ? { text: "OK", onPress: () => requestPermission(permission) }
-        : Platform.OS == "ios"
-        ? {
-            text: "Open Settings",
-            onPress: Permissions.openSettings
-          }
-        : {
-            text: "Ok",
-            onPress: () => requestPermission(permission)
-          }
-    ]
-  );
+      {
+        text: "Open Setting",
+        onPress: Platform.select({
+          ios: Permissions.openSettings,
+          android: AndroidOpenSettings.appDetailsSettings
+        })
+      }
+    ]);
+  });
+}
+
+async function alertForPermission(status: string, permission: string) {
+  return new Promise(resolve => {
+    Alert.alert(
+      "Can we access your photos?",
+      "We need access so you can set your profile pic",
+      [
+        {
+          text: "No way",
+          onPress: () => resolve(false),
+          style: "cancel"
+        },
+        status == "undetermined"
+          ? {
+              text: "OK",
+              onPress: () => resolve(requestPermission(permission))
+            }
+          : Platform.OS == "ios"
+          ? {
+              text: "Open Settings",
+              onPress: Permissions.openSettings
+            }
+          : {
+              text: "Ok",
+              onPress: () => resolve(requestPermission(permission))
+            }
+      ]
+    );
+  });
 }

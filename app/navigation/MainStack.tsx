@@ -11,16 +11,17 @@ import Settings from "../scenes/Home/Settings";
 import MediaList from "../components/MediaList";
 
 import Theme from "app/resources/themes";
+import UserForm from "app/scenes/User/UserForm";
 
 const TabsStack = createBottomTabNavigator(
   {
-    Albuns: Albuns,
-    SharedWith: SharedWith,
-    Notifications: Notifications,
-    Settings: Settings
+    Albuns,
+    SharedWith,
+    Notifications,
+    Settings
   },
   {
-    initialRouteName: "Settings",
+    // initialRouteName: "Settings",
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: _ => {
         const { routeName } = navigation.state;
@@ -55,6 +56,7 @@ const MainStack = createStackNavigator(
       screen: TabsStack,
       navigationOptions: { header: null }
     },
+    UserForm: UserForm,
     MediaList: MediaList
   },
   { initialRouteName: "Main" }

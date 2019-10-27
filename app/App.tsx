@@ -11,16 +11,15 @@ import {
   View,
   StatusBar,
   KeyboardAvoidingView,
-  Platform,
-  ScrollView
+  Platform
 } from "react-native";
 import Theme from "./resources/themes";
 
 YellowBox.ignoreWarnings([
-  // "Require cycle:"
-  // "Warning: componentWillMount is deprecated",
-  // "Warning: componentWillUpdate is deprecated",
-  // "Warning: componentWillReceiveProps is deprecated"
+  "Require cycle:",
+  "Warning: componentWillMount is deprecated",
+  "Warning: componentWillUpdate",
+  "Warning: componentWillReceiveProps is deprecated"
 ]);
 function App() {
   const styles = StyleSheet.create({
@@ -33,8 +32,7 @@ function App() {
     <Root>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1 }}
-      >
+        style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1, backgroundColor: "blue" }}>
           <StatusBar barStyle="light-content" />
           <View style={styles.container}>

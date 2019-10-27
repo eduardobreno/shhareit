@@ -5,6 +5,7 @@ class User {
   bio: string;
   username: string;
   email: string;
+  isCompleted: boolean;
   metadata: string;
 
   constructor({
@@ -14,7 +15,8 @@ class User {
     bio,
     username,
     email,
-    metadata
+    metadata,
+    isCompleted
   }: any = {}) {
     this.id = id;
     this.displayName = displayName || undefined;
@@ -23,6 +25,7 @@ class User {
     this.username = username || undefined;
     this.email = email;
     this.metadata = metadata;
+    this.isCompleted = isCompleted || false;
   }
 }
 

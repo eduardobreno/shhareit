@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   }
 });
 
@@ -28,7 +28,7 @@ function Notifications(props: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontFamily: "OpenSans-Regular" }} > Notifications</Text>
+      <Text style={{ fontFamily: "OpenSans-Regular" }}> Notifications</Text>
       <Button onPress={signIn}>
         <Text>{I18n.t("signOut")}</Text>
       </Button>
@@ -40,6 +40,7 @@ Notifications.navigationOptions = {
   headerTitleStyle: {
     fontFamily: "OpenSans-Regular"
   },
+  headerForceInset: { top: "never", bottom: "never" },
   title: "Notifications"
 };
 
