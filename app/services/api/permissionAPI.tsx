@@ -8,7 +8,7 @@ export async function askDefaultPermission() {
   console.log(response);
   switch (response.photo) {
     case "undetermined":
-      return alertForPermission(response.photo, "photo");
+      return alertForPermission(response.photo, "camera");
     case "denied":
       return alertNoPermission();
     case "restricted":
@@ -37,7 +37,7 @@ async function requestPermission(permission: string) {
   }
 }
 
-function alertNoPermission(status) {
+function alertNoPermission() {
   return new Promise(resolve => {
     Alert.alert("We don't have permission", "You need to set it manually", [
       {

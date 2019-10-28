@@ -20,11 +20,14 @@ const Hub = (props: Props) => {
 
   const isLogged = async () => {
     const isON = await UserAPI.isUserLogged();
-    console.log("HUB", UserAPI.getData());
     if (isON) {
-      navigation.navigate("Settings", {
-        isCompleted: UserAPI.getData().isCompleted
-      });
+      if (UserAPI.getData().isCompleted) {
+        navigation.navigate("Main");
+      } else {
+        navigation.navigate("Settings", {
+          isCompleted: UserAPI.getData().isCompleted
+        });
+      }
     } else {
       const resetAction = StackActions.reset({
         index: 0,

@@ -347,6 +347,8 @@ PODS:
     - Fabric
     - Firebase/Core
     - React
+  - RNFS (2.16.1):
+    - React
   - RNGestureHandler (1.4.1):
     - React
   - RNLocalize (1.1.4):
@@ -394,6 +396,7 @@ DEPENDENCIES:
   - ReactNativePermissions (from `../node_modules/react-native-permissions`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
+  - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -481,6 +484,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNFirebase:
     :path: "../node_modules/react-native-firebase/ios"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNLocalize:
@@ -540,6 +545,7 @@ SPEC CHECKSUMS:
   ReactNativePermissions: f3beb8871251594a8ea2c6b19a3f8252d5c7379d
   RNCAsyncStorage: 2e2e3feb9bdadc752a026703d8c4065ca912e75a
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
+  RNFS: 795866388a01de4e470f3b1041a99cf20a343844
   RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
   RNLocalize: 62a949d2ec5bee0eb8f39a80a48f01e2f4f67080
   RNReanimated: 6abbbae2e5e72609d85aabd92a982a94566885f1

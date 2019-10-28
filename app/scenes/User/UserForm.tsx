@@ -71,6 +71,7 @@ function UserForm(props: Props) {
       }
     });
   };
+
   useEffect(() => {
     if (user && user.photoURL) {
       setPhoto({ uri: user.photoURL });
