@@ -1,7 +1,6 @@
+import { Alert, Platform } from "react-native";
 import Permissions from "react-native-permissions";
 import AndroidOpenSettings from "react-native-android-open-settings";
-
-import { Alert, Platform } from "react-native";
 
 export async function askDefaultPermission() {
   const response = await Permissions.checkMultiple(["camera", "photo"]);

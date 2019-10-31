@@ -6,15 +6,17 @@ import {
   NavigationState,
   NavigationParams
 } from "react-navigation";
-import ImagePicker, { ImagePickerResponse } from "react-native-image-picker";
-import * as RNFS from "react-native-fs";
 
-import { generateFileName } from "app/helpers/file";
+import {
+  generateFileName,
+  getExtensionFromFile,
+  saveFileToFolder
+} from "app/helpers/fileHelper";
 import I18n from "app/helpers/i18n";
 import Theme from "app/resources/themes";
 import { customError } from "app/helpers/errorHandler";
-
-import { askDefaultPermission } from "app/services/api/permissionAPI";
+import * as Camera from "app/helpers/CameraManager";
+import * as RNFS from "react-native-fs";
 
 const styles = StyleSheet.create({
   container: {
@@ -34,64 +36,37 @@ function Albuns(props: Props) {
   const [medias, setMedias] = useState<string[]>([]);
   const [fabActive, setFabActive] = useState(false);
 
-  const cbCamera = async (response: ImagePickerResponse) => {
-    if (response.error) {
-      customError("Couldn't get your photo, sorry! =[");
-      console.error("pickImage: ", response);
-    } else if (response.didCancel) {
-    } else {
-      let ext = ".unknown";
-      if (response.fileName) {
-        const arrFN = response.fileName.split(".");
-        ext = arrFN[arrFN.length - 1];
-      }
-
-      const fileName = generateFileName(ext);
-      RNFS.mkdir(RNFS.DocumentDirectoryPath + "/media", {
-        NSURLIsExcludedFromBackupKey: true
-      });
-      await RNFS.copyFile(
-        response.uri,
-        RNFS.DocumentDirectoryPath + "/media/" + fileName
-      );
-      const dir2 = await RNFS.readDir(RNFS.DocumentDirectoryPath + "/media");
-      const mlist = dir2.map(item => item.path);
-      setMedias(mlist);
-    }
-  };
-
   useEffect(() => {
     const load = async () => {
-      const dir2 = await RNFS.readDir(RNFS.DocumentDirectoryPath + "/media");
-      console.log("dir", dir2);
+      const dir2 = await RNFS.readDir(RNFS.DocumentDirectoryPath + "/CAMERA");
+      // console.log("dir", dir2);
       const mlist = dir2.map(item => item.path);
       setMedias(mlist);
     };
     load();
   }, []);
 
-  const callCamera = async (type: "photo" | "video") => {
-    const hasPermission = await askDefaultPermission();
-    if (!hasPermission) return;
-    ImagePicker.launchCamera(
-      {
-        mediaType: type,
-        noData: true
-      },
-      cbCamera
-    );
+  const openCamera = async (type: "photo" | "video") => {
+    const path = await Camera.openCamera(type);
+    console.log("PATH", path);
   };
 
-  const callGallery = async () => {
-    const hasPermission = await askDefaultPermission();
-    if (!hasPermission) return;
-    ImagePicker.launchImageLibrary(
-      {
-        mediaType: "mixed",
-        noData: true
-      },
-      cbCamera
-    );
+  const openGallery = async () => {
+    const response = await Camera.openGallery();
+    console.log("PATH GALLERY", response);
+
+    if (response.fileName === undefined) return;
+
+    const extension = getExtensionFromFile(response.fileName);
+    const fileName = generateFileName(extension);
+    await saveFileToFolder(fileName, response.uri, "CAMERA").catch(e => {
+      console.error("ERROR saveFileToFolder", e);
+    });
+
+    const dir2 = await RNFS.readDir(RNFS.DocumentDirectoryPath + "/CAMERA");
+    const mlist = dir2.map(item => item.path);
+    console.log(mlist);
+    setMedias(mlist);
   };
 
   return (
@@ -109,7 +84,7 @@ function Albuns(props: Props) {
           style={{ backgroundColor: "#DD5144" }}
           onPress={() => {
             setFabActive(!fabActive);
-            callCamera("photo");
+            openCamera("photo");
           }}>
           <Icon name="md-camera" />
         </Button>
@@ -117,7 +92,7 @@ function Albuns(props: Props) {
           style={{ backgroundColor: "#DD5144" }}
           onPress={() => {
             setFabActive(!fabActive);
-            callCamera("video");
+            openCamera("video");
           }}>
           <Icon name="md-videocam" />
         </Button>
@@ -125,18 +100,18 @@ function Albuns(props: Props) {
           style={{ backgroundColor: "#DD5144" }}
           onPress={() => {
             setFabActive(!fabActive);
-            callGallery();
+            openGallery();
           }}>
           <Icon name="md-albums" />
         </Button>
       </Fab>
       <Text style={{ fontFamily: "OpenSans-Regular" }}> Albuns</Text>
       {medias.map((item, index) => {
-        console.log(item);
         return (
           <Thumbnail
             key={index}
             large
+            square
             source={{
               uri: "file:///" + item
             }}
